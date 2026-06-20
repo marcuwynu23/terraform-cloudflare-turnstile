@@ -107,6 +107,23 @@ Cloudflare Turnstile is a free, privacy-focused CAPTCHA replacement that uses ma
 | `turnstile_sitekey` | Public Sitekey for frontend integration |
 | `turnstile_secret_key` | Secret key for backend verification (sensitive) |
 
+### Viewing Outputs
+
+- **View non-sensitive outputs**:
+  ```bash
+  terraform output
+  ```
+
+- **View a specific sensitive output (e.g., secret key)**:
+  ```bash
+  terraform output turnstile_secret_key
+  ```
+
+- **View all outputs in JSON (including sensitive)**:
+  ```bash
+  terraform output -json
+  ```
+
 ---
 
 ## Resources Created
