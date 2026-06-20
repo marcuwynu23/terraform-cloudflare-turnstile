@@ -1,13 +1,18 @@
 # Variables definition file
+
+variable "cloudflare_api_key" {
+  type = string
+  description = "Your Cloudflare API Key (legacy) or API Token with appropriate permissions"
+}
+
+variable "cloudflare_api_email" {
+  type = string
+  description = "Your Cloudflare account email (required if using API Key)"
+}
+
 variable "cloudflare_account_id" {
   type        = string
   description = "Your Cloudflare Account ID"
-}
-
-variable "cloudflare_api_token" {
-  type        = string
-  sensitive   = true
-  description = "Cloudflare API Token with appropriate permissions"
 }
 
 variable "turnstile_widget_name" {
@@ -36,8 +41,8 @@ variable "turnstile_widget_bot_fight_mode" {
 
 variable "turnstile_widget_clearance_level" {
   type        = string
-  description = "Clearance level (auto, interactive, non-interactive)"
-  default     = "auto"
+  description = "Clearance level (no_clearance, jschallenge,managed, interactive)"
+  default     = "interactive"
 }
 
 variable "turnstile_widget_ephemeral_id" {
