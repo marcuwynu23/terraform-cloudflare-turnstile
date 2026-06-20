@@ -1,12 +1,12 @@
 # Variables definition file
 
 variable "cloudflare_api_key" {
-  type = string
+  type        = string
   description = "Your Cloudflare API Key (legacy) or API Token with appropriate permissions"
 }
 
 variable "cloudflare_api_email" {
-  type = string
+  type        = string
   description = "Your Cloudflare account email (required if using API Key)"
 }
 
