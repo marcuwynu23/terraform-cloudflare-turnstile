@@ -1,0 +1,13 @@
+# Cloudflare Account ID and API Token
+cloudflare_account_id = "your-account-id"
+cloudflare_api_token = "your-cloudflare-api-token"
+
+# Turnstile Widget Settings
+turnstile_widget_name       = "My Turnstile Widget"
+turnstile_widget_domains  = ["example.com", "blog.example.com"]
+turnstile_widget_mode    = "managed"
+turnstile_widget_bot_fight_mode = false
+turnstile_widget_clearance_level = "auto"
+turnstile_widget_ephemeral_id = false
+turnstile_widget_offlabel = false
+turnstile_widget_region = "world"
