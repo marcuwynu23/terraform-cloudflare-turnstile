@@ -45,7 +45,7 @@ Cloudflare Turnstile is a free, privacy-focused CAPTCHA replacement that uses ma
 
 ---
 
-## Usage
+## Usage as a Standalone Project
 
 1. **Configure your variables**:
 
@@ -80,6 +80,38 @@ Cloudflare Turnstile is a free, privacy-focused CAPTCHA replacement that uses ma
    ```bash
    terraform apply
    ```
+
+---
+
+## Usage as a Module
+
+Reference this repository as a Terraform module in your own configurations:
+
+```hcl
+module "turnstile" {
+  source = "github.com/marcuwynu23/terraform-cloudflare-turnstile?ref=main"
+
+  cloudflare_account_id = var.cloudflare_account_id
+  cloudflare_api_token  = var.cloudflare_api_token
+
+  turnstile_widget_name    = "My App Widget"
+  turnstile_widget_domains = ["example.com"]
+  turnstile_widget_mode    = "managed"
+}
+```
+
+Then use the outputs in your configuration:
+
+```hcl
+resource "aws_security_group" "example" {
+  # Example: pass sitekey to an ECS container or Lambda
+  tags = {
+    TurnstileSiteKey = module.turnstile.turnstile_sitekey
+  }
+}
+```
+
+All [variables](#variables-reference) and [outputs](#outputs) documented below are available when using this as a module.
 
 ---
 
