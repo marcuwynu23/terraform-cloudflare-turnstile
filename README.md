@@ -52,8 +52,9 @@ Cloudflare Turnstile is a free, privacy-focused CAPTCHA replacement that uses ma
    Copy `terraform.tfvars.example` to `terraform.tfvars` and update the values:
    ```hcl
    # Required
-   cloudflare_account_id = "your-account-id"
-   cloudflare_api_token = "your-cloudflare-api-token"
+   cloudflare_account_id  = "your-account-id"
+   cloudflare_api_key     = "your-cloudflare-api-key"
+   cloudflare_api_email   = "your-email@example.com"
 
    # Optional (use defaults or customize)
    turnstile_widget_name                = "My Login Widget"
@@ -92,7 +93,8 @@ module "turnstile" {
   source = "github.com/marcuwynu23/terraform-cloudflare-turnstile?ref=main"
 
   cloudflare_account_id = var.cloudflare_account_id
-  cloudflare_api_token  = var.cloudflare_api_token
+  cloudflare_api_key    = var.cloudflare_api_key
+  cloudflare_api_email  = var.cloudflare_api_email
 
   turnstile_widget_name    = "My App Widget"
   turnstile_widget_domains = ["example.com"]
@@ -103,15 +105,12 @@ module "turnstile" {
 Then use the outputs in your configuration:
 
 ```hcl
-resource "aws_security_group" "example" {
-  # Example: pass sitekey to an ECS container or Lambda
-  tags = {
-    TurnstileSiteKey = module.turnstile.turnstile_sitekey
-  }
+output "sitekey" {
+  value = module.turnstile.turnstile_sitekey
 }
 ```
 
-All [variables](#variables-reference) and [outputs](#outputs) documented below are available when using this as a module.
+All variables and outputs documented below are available when using this as a module.
 
 ---
 
@@ -120,7 +119,8 @@ All [variables](#variables-reference) and [outputs](#outputs) documented below a
 | Variable | Description | Type | Default |
 |----------|-------------|------|---------|
 | `cloudflare_account_id` | Your Cloudflare Account ID | `string` | (required) |
-| `cloudflare_api_token` | Cloudflare API Token with Turnstile permissions | `string` | (required, sensitive) |
+| `cloudflare_api_key` | Cloudflare API Key (legacy) or API Token with Turnstile permissions | `string` | (required, sensitive) |
+| `cloudflare_api_email` | Cloudflare account email (required if using API Key) | `string` | (required) |
 | `turnstile_widget_name` | Name of the Turnstile widget | `string` | `"My Turnstile Widget"` |
 | `turnstile_widget_domains` | List of domains where the widget can be used | `list(string)` | `["example.com", "blog.example.com"]` |
 | `turnstile_widget_mode` | Widget mode: `managed`, `non-interactive`, or `invisible` | `string` | `"managed"` |
