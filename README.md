@@ -2,8 +2,6 @@
 
 This Terraform project provisions and manages **Cloudflare Turnstile** widgets for your applications. Turnstile is a privacy-first CAPTCHA alternative that protects your website from bots, spam, and abuse while providing a seamless user experience.
 
----
-
 ## What is Cloudflare Turnstile?
 
 Cloudflare Turnstile is a free, privacy-focused CAPTCHA replacement that uses machine learning and non-interactive challenges to distinguish between humans and bots. Key features include:
@@ -16,14 +14,10 @@ Cloudflare Turnstile is a free, privacy-focused CAPTCHA replacement that uses ma
 - **Easy Integration**: Works with any website or application
 - **Global Coverage**: Leverages Cloudflare's 300+ data centers worldwide
 
----
-
 ## Prerequisites
 
 1. **Terraform**: Install from [terraform.io](https://developer.hashicorp.com/terraform/downloads)
 2. **Cloudflare Account**: Sign up at [dash.cloudflare.com](https://dash.cloudflare.com/)
-
----
 
 ## Setup Guide
 
@@ -42,8 +36,6 @@ Cloudflare Turnstile is a free, privacy-focused CAPTCHA replacement that uses ma
 5. Under **Account Resources**, select your account
 6. Click **Continue to summary** → **Create Token**
 7. Save the token securely (you won't be able to see it again!)
-
----
 
 ## Usage as a Standalone Project
 
@@ -82,8 +74,6 @@ Cloudflare Turnstile is a free, privacy-focused CAPTCHA replacement that uses ma
    terraform apply
    ```
 
----
-
 ## Usage as a Module
 
 Reference this repository as a Terraform module in your own configurations:
@@ -112,8 +102,6 @@ output "sitekey" {
 
 All variables and outputs documented below are available when using this as a module.
 
----
-
 ## Variables Reference
 
 | Variable | Description | Type | Default |
@@ -129,8 +117,6 @@ All variables and outputs documented below are available when using this as a mo
 | `turnstile_widget_ephemeral_id` | Use ephemeral ID | `bool` | `false` |
 | `turnstile_widget_offlabel` | Enable offlabel use | `bool` | `false` |
 | `turnstile_widget_region` | Region: `world`, `us`, `eu`, or `apac` | `string` | `"world"` |
-
----
 
 ## Outputs
 
@@ -155,8 +141,6 @@ All variables and outputs documented below are available when using this as a mo
   ```bash
   terraform output -json
   ```
-
----
 
 ## Resources Created
 
