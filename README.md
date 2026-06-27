@@ -78,19 +78,36 @@ Cloudflare Turnstile is a free, privacy-focused CAPTCHA replacement that uses ma
 
 Reference this repository as a Terraform module in your own configurations:
 
-```hcl
-module "turnstile" {
-  source = "github.com/marcuwynu23/terraform-cloudflare-turnstile?ref=main"
-
-  cloudflare_account_id = var.cloudflare_account_id
-  cloudflare_api_key    = var.cloudflare_api_key
-  cloudflare_api_email  = var.cloudflare_api_email
-
-  turnstile_widget_name    = "My App Widget"
-  turnstile_widget_domains = ["example.com"]
-  turnstile_widget_mode    = "managed"
-}
-```
+> **Option 1**: Terraform Registry (recommended)
+> ```hcl
+> module "turnstile" {
+>   source  = "marcuwynu23/turnstile/cloudflare"
+>   version = "1.0.0"
+>
+>   cloudflare_account_id = var.cloudflare_account_id
+>   cloudflare_api_key    = var.cloudflare_api_key
+>   cloudflare_api_email  = var.cloudflare_api_email
+>
+>   turnstile_widget_name    = "My App Widget"
+>   turnstile_widget_domains = ["example.com"]
+>   turnstile_widget_mode    = "managed"
+> }
+> ```
+>
+> **Option 2**: GitHub source
+> ```hcl
+> module "turnstile" {
+>   source = "github.com/marcuwynu23/terraform-cloudflare-turnstile?ref=main"
+>
+>   cloudflare_account_id = var.cloudflare_account_id
+>   cloudflare_api_key    = var.cloudflare_api_key
+>   cloudflare_api_email  = var.cloudflare_api_email
+>
+>   turnstile_widget_name    = "My App Widget"
+>   turnstile_widget_domains = ["example.com"]
+>   turnstile_widget_mode    = "managed"
+> }
+> ```
 
 Then use the outputs in your configuration:
 
