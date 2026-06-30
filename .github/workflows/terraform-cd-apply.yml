@@ -1,0 +1,121 @@
+name: CD - Cloudflare Turnstile (Apply)
+
+on:
+  workflow_dispatch:
+    inputs:
+
+      project_id:
+        description: GCP project ID
+        required: true
+        type: string
+
+      region:
+        description: "GCP region (Free Tier: us-west1, us-central1, us-east1)"
+        required: true
+        type: string
+        default: us-central1
+
+      cloudflare_account_id:
+        description: Cloudflare Account ID
+        required: true
+        type: string
+
+      turnstile_widget_name:
+        description: turnstile widget name
+        required: true
+        type: string
+
+      turnstile_widget_domains:
+        description: turnstile widget domains
+        required: true
+        type: string
+
+      turnstile_widget_mode:
+        description: turnstile widget mode
+        required: true
+        type: string
+
+      turnstile_widget_bot_fight_mode:
+        description: turnstile widget bot fight mode
+        required: true
+        type: string
+
+      turnstile_widget_clearance_level:
+        description: turnstile widget clearance level
+        required: true
+        type: string
+
+      turnstile_widget_ephemeral_id:
+        description: turnstile widget ephemeral id
+        required: true
+        type: string
+
+      turnstile_widget_offlabel:
+        description: turnstile widget offlabel
+        required: true
+        type: string
+
+      turnstile_widget_region:
+        description: turnstile widget region
+        required: true
+        type: string
+
+env:
+  TF_BUCKET_NAME: ${{ secrets.TF_BUCKET_NAME }}
+  TF_BUCKET_PREFIX: ${{ secrets.TF_BUCKET_PREFIX }}
+  TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  TF_VAR_cloudflare_api_key: ${{ secrets.CLOUDFLARE_API_KEY }}
+jobs:
+  apply:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Authenticate to GCP
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: latest
+    - name: Ensure GCS State Bucket Exists
+      run: |
+        gcloud storage buckets describe gs://$TF_BUCKET_NAME --format="json" 2>/dev/null || \
+        gcloud storage buckets create gs://$TF_BUCKET_NAME \
+          --location=${{ github.event.inputs.region }} \
+          --uniform-bucket-level-access
+    - name: Terraform Init
+      run: |
+        terraform init \
+          -backend-config="bucket=$TF_BUCKET_NAME" \
+          -backend-config="prefix=$TF_BUCKET_PREFIX"
+    - name: Terraform Plan
+      run: |
+        terraform plan  \
+          -var="project_id=${{ github.event.inputs.project_id }}" \
+          -var="region=${{ github.event.inputs.region }}" \
+          -var="cloudflare_account_id=${{ github.event.inputs.cloudflare_account_id }}" \
+          -var="turnstile_widget_name=${{ github.event.inputs.turnstile_widget_name }}" \
+          -var="turnstile_widget_domains=${{ github.event.inputs.turnstile_widget_domains }}" \
+          -var="turnstile_widget_mode=${{ github.event.inputs.turnstile_widget_mode }}" \
+          -var="turnstile_widget_bot_fight_mode=${{ github.event.inputs.turnstile_widget_bot_fight_mode }}" \
+          -var="turnstile_widget_clearance_level=${{ github.event.inputs.turnstile_widget_clearance_level }}" \
+          -var="turnstile_widget_ephemeral_id=${{ github.event.inputs.turnstile_widget_ephemeral_id }}" \
+          -var="turnstile_widget_offlabel=${{ github.event.inputs.turnstile_widget_offlabel }}" \
+          -var="turnstile_widget_region=${{ github.event.inputs.turnstile_widget_region }}"
+    - name: Terraform Apply
+      run: |
+        terraform apply -auto-approve  \
+          -var="project_id=${{ github.event.inputs.project_id }}" \
+          -var="region=${{ github.event.inputs.region }}" \
+          -var="cloudflare_account_id=${{ github.event.inputs.cloudflare_account_id }}" \
+          -var="turnstile_widget_name=${{ github.event.inputs.turnstile_widget_name }}" \
+          -var="turnstile_widget_domains=${{ github.event.inputs.turnstile_widget_domains }}" \
+          -var="turnstile_widget_mode=${{ github.event.inputs.turnstile_widget_mode }}" \
+          -var="turnstile_widget_bot_fight_mode=${{ github.event.inputs.turnstile_widget_bot_fight_mode }}" \
+          -var="turnstile_widget_clearance_level=${{ github.event.inputs.turnstile_widget_clearance_level }}" \
+          -var="turnstile_widget_ephemeral_id=${{ github.event.inputs.turnstile_widget_ephemeral_id }}" \
+          -var="turnstile_widget_offlabel=${{ github.event.inputs.turnstile_widget_offlabel }}" \
+          -var="turnstile_widget_region=${{ github.event.inputs.turnstile_widget_region }}"
